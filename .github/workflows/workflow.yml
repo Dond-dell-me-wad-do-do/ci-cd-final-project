@@ -1,20 +1,28 @@
-name: {name of workflow}
+name: CI workflow
 
 on:
   push:
-    branches: {array of branches}
+    branches: [ main ]
   pull_request:
-    branches: {array of branches}
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: {placeholder}
+    runs-on: ubuntu-latest
     steps:
-      - name: {placeholder}
-        uses: {placeholder}
-      - name: {placeholder}
-        uses: {placeholder}
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: {placeholder}
-      - name: {placeholder}
-        run: {placeholder}
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint with ESLint
+        run: npx eslint .
+
+      - name: Run unit tests with Jest
+        run: npx jest
